@@ -43,10 +43,10 @@ class GameFragment : Fragment() {
 
         // Inflate view and obtain an instance of the binding class
         binding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.game_fragment,
-                container,
-                false
+            inflater,
+            R.layout.game_fragment,
+            container,
+            false
         )
         Log.i("GameFragment", "Called ViewModelProvider.get")
         viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
@@ -76,6 +76,17 @@ class GameFragment : Fragment() {
         gameFinished()
     }
 
+    /**
+     * Called when the game is finished
+     */
+    private fun gameFinished() {
+        Toast.makeText(activity, "Game has just finished", Toast.LENGTH_SHORT).show()
+        val action = GameFragmentDirections.actionGameToScore()
+        action.score = viewModel.score
+        action.word = viewModel.word
+        NavHostFragment.findNavController(this).navigate(action)
+    }
+
 
     /** Methods for updating the UI **/
 
@@ -87,13 +98,5 @@ class GameFragment : Fragment() {
         binding.scoreText.text = viewModel.score.toString()
     }
 
-    /**
-     * Called when the game is finished
-     */
-    private fun gameFinished() {
-        Toast.makeText(activity, "Game has just finished", Toast.LENGTH_SHORT).show()
-        val action = GameFragmentDirections.actionGameToScore()
-        action.score = viewModel.score
-        NavHostFragment.findNavController(this).navigate(action)
-    }
+
 }
